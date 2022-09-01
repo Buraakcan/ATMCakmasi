@@ -44,6 +44,24 @@ public class Money : MonoBehaviour
             }
         }
 
+        // kaçýncý sýrada = playerController.moneyList.IndexOf(gameObject);3
+        //listede kaç obje var == playerController.moneyList.Count;7
+        // 
+
+        if (other.transform.CompareTag("Engel"))
+        {
+            int sira = playerController.moneyList.IndexOf(gameObject);
+            int kactane = playerController.moneyList.Count - sira;
+            for (int i = 0; i < kactane; i++)
+            {
+                playerController.moneyList.RemoveAt(sira);
+            }
+
+        }
+        
+
+
+
     }
 
 }

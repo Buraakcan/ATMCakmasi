@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public GameObject Para;
     public Joystick joystick;
     public float zamanCarpani;
+    
 
     private void Start()
     {
@@ -23,10 +24,37 @@ public class PlayerController : MonoBehaviour
     {
         ParaTakipEt();
         if (oyunDevam)
+            //transform.Translate(0, 0, zSpeed * Time.deltaTime);
             transform.position += new Vector3(0, 0, zSpeed);
 
-        //transform.position = Camera.main.ScreenToViewportPoint(Input.mousePosition);
-        //yatayInput = Input.GetAxis("Horizontal");
+        if (InputManager.instance.direction.x > 0)
+        {
+            if (transform.position.x + InputManager.instance.direction.x > 2.5f)
+            {
+                transform.position = new Vector3(2.5f, transform.position.y, transform.position.z);
+            }
+            else
+            {
+                transform.position += new Vector3(InputManager.instance.direction.x * InputManager.instance.Sensitivity, y: 0, 0);
+            }
+        }
+        if (InputManager.instance.direction.x < 0)
+        {
+            if (transform.position.x + InputManager.instance.direction.x < -2.5f)
+            {
+                transform.position = new Vector3(-2.5f, transform.position.y, transform.position.z);
+            }
+            else
+            {
+                transform.position += new Vector3(InputManager.instance.direction.x * InputManager.instance.Sensitivity, 0, 0);
+            }
+        }
+
+    }
+
+
+    private void JoystickControl()
+    {
         yatayInput = joystick.Horizontal;
         if (yatayInput != 0)
         {
@@ -46,6 +74,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Finish"))
@@ -53,13 +82,6 @@ public class PlayerController : MonoBehaviour
             print("Oyun Finish");
             oyunDevam = false;
         }
-
-        //if (other.transform.CompareTag("Para"))
-        //{
-        //    print("bara alýndý");
-        //    other.GetComponent<Money>().playerController = this;
-        //    ParaAlma(other.gameObject);
-        //}
     }
     public void ParaAlma(GameObject gameObject)
 
@@ -79,7 +101,7 @@ public class PlayerController : MonoBehaviour
         int sayac = 0;
         foreach (var money in moneyList)
         {
-            money.transform.position =  new Vector3(money.transform.position.x,money.transform.position.y, transform.position.z + 1 + (sayac * 0.5f));
+            money.transform.position = new Vector3(money.transform.position.x, money.transform.position.y, transform.position.z + 1 + (sayac * 0.5f));
 
             Vector3 varisNoktasi;
             if (sayac == 0)
