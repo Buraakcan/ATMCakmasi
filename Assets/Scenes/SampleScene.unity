@@ -888,12 +888,7 @@ MonoBehaviour:
   zSpeed: 0.07
   yatayInput: 0
   xSpeed: 0.1
-  moneyList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  moneyList: []
   Para: {fileID: 3680096747212775749, guid: bfcc4bfa854bd8d4e874a289dc9aefc3, type: 3}
   joystick: {fileID: 1586020666}
   zamanCarpani: 18.56
