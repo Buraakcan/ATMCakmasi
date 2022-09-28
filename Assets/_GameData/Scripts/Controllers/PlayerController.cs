@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,10 +9,12 @@ public class PlayerController : MonoBehaviour
     public float yatayInput;
     public float xSpeed;
     public List<GameObject> moneyList;
+    //public GameObject[] moneyArray;
     public GameObject Para;
     public Joystick joystick;
     public float zamanCarpani;
-    
+    public int sonDalga;
+
 
     private void Start()
     {
@@ -90,16 +93,66 @@ public class PlayerController : MonoBehaviour
         {
             moneyList.Add(gameObject);
             gameObject.GetComponent<Money>().isCollected = true;
+            sonDalga = moneyList.Count - 1;
+            MeksikaDalgasi();
             //gameObject.transform.SetParent(this.transform);
+        }
+    }
+    public void MeksikaDalgasi()
+    {
+        if (sonDalga >= 0)
+        {
+            StartCoroutine(Scale(moneyList[sonDalga].transform, 0.033f));
+        }
+    }
 
-
+    public IEnumerator Scale(Transform obje, float saniye)
+    {
+        float alpha = 0;
+        Vector3 baslangicDegeri = new Vector3(0.5f, 0.5f, 0.5f);
+        Vector3 finalDegeri = baslangicDegeri * 1.5f;
+        while (alpha < 1)
+        {
+            alpha = Mathf.Min(1.0f, alpha + (Time.deltaTime / saniye));
+            obje.localScale = Vector3.Lerp(baslangicDegeri, finalDegeri, alpha);
+            yield return null;
         }
 
+
+
+        float alpha2 = 0;
+        Vector3 baslangicDegeri2 = obje.localScale;
+        Vector3 finalDegeri2 = baslangicDegeri;
+        while (alpha2 < 1)
+        {
+            alpha2 = Mathf.Min(1.0f, alpha2 + (Time.deltaTime / saniye * 5));
+            obje.localScale = Vector3.Lerp(baslangicDegeri2, finalDegeri2, alpha2);
+            yield return null;
+        }
+        sonDalga--;
+        MeksikaDalgasi();
+
     }
+
+    //private IEnumerator TemplateCoroutine()  // (Corotiune methodu ) belli bir süre içinde  baðýmsýz bir lerp yapma 
+    //{
+    //    WaitForEndOfFrame frame = new WaitForEndOfFrame();
+    //    float alpha = 0.0f;
+    //    float duration = 1.0f;
+    //    baslangic
+    //    final
+    //    while (alpha < 1.0f)
+    //    {
+    //        alpha = Mathf.Min(1.0f, alpha + (Time.deltaTime / duration));
+    //        transform.position = Vector3.Lerp(baslangic,sonuc,alpha);
+    //        yield return frame;
+    //    }
+    //}
+
     public void ParaTakipEt()
     {
         int sayac = 0;
-        foreach (var money in moneyList)
+        foreach (GameObject money in moneyList)   //var nedir aðam? variable (deðiþken)
         {
             money.transform.position = new Vector3(money.transform.position.x, money.transform.position.y, transform.position.z + 1 + (sayac * 0.5f));
 
